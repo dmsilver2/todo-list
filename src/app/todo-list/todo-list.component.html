@@ -1,6 +1,4 @@
-<div class="row">
-    <button class="btn btn-success">Create Todo</button>
-</div>
+<app-todo-create></app-todo-create>
 <br/>
 <table class="table table-striped">
     <thead>
@@ -11,12 +9,14 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let todo of todos">
+        <tr *ngFor="let todo of todos; let i = index">
             <td class="align-middle">{{todo.description}}</td>
             <td class="align-middle"><input id="completed" name="completed" type="checkbox" [checked]="todo.completed"/></td>
             <td class="align-middle">
                 <button class="btn btn-warning">Edit</button>
-                <button class="btn btn-danger btn-delete">Delete</button>
+                <button
+                    (click)="onDelete(i)"
+                    class="btn btn-danger btn-delete">Delete</button>
             </td>
         </tr>
     </tbody>
