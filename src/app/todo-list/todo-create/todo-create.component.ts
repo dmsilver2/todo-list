@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { TodosService } from '../todos.service';
 import { Todo } from '../todo.model';
@@ -9,7 +9,6 @@ import { Todo } from '../todo.model';
     styleUrls: ['./todo-create.component.css']
 })
 export class TodoCreateComponent implements OnInit {
-    editingTodo = false;
 
     constructor(private todosService: TodosService) { }
 

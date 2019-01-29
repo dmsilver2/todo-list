@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Todo } from './todo.model';
 import { TodosService } from './todos.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-todo-list',
@@ -12,7 +13,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
     todos: Todo[] = [];
     todosSub: Subscription;
 
-    constructor(private todoService: TodosService) { }
+    constructor(
+        private todoService: TodosService,
+        private router: Router,
+        private activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
         this.todosSub = this.todoService.getTodoListUpdateListener()
@@ -29,5 +33,9 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
     onDelete(index: number) {
         this.todoService.deleteTodo(index);
+    }
+
+    onEdit(todoIndex: string) {
+        this.router.navigate([todoIndex], { relativeTo: this.activatedRoute });
     }
 }

@@ -1,0 +1,33 @@
+<form ngForm
+      (ngSubmit)="onSubmit(f)"
+      #f="ngForm">
+    <div class="form-group">
+        <label for="description">New
+            Task Description</label>
+        <input [ngModel]="todo?.description"
+               minlength="3"
+               name="description"
+               required
+               type="text"
+               class="form-control"
+               id="description"
+               #description="ngModel"
+               placeholder="Enter Todo Description">
+        <small class="form-text text-muted"
+               *ngIf="!description.valid && description.touched">
+            Enter Valid Description
+        </small>
+    </div>
+    <div class="form-check">
+        <input [ngModel]="todo?.completed"
+               name="completed"
+               type="checkbox"
+               class="form-check-input"
+               id="completed">
+        <label class="form-check-label"
+               for="completed">Completed</label>
+    </div>
+    <hr />
+    <button type="submit"
+            class="btn btn-primary">Save</button>
+</form>

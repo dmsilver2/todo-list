@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Todo } from './todo.model';
 import { HttpClient } from '@angular/common/http';
 import { Subject, Observable } from 'rxjs';
+import { stringify } from '@angular/compiler/src/util';
 
 @Injectable({ providedIn: 'root' })
 export class TodosService {
@@ -16,6 +17,10 @@ export class TodosService {
                 this.todoList = todoData.todos;
                 this.todosUpdated.next([...this.todoList]);
             });
+    }
+
+    fetchTodoById(id: string) {
+        return this.http.get<{ message: string, todo: Todo }>('http://localhost:3000/api/todos/' + id);
     }
 
     getTodoListUpdateListener(): Observable<Todo[]> {
@@ -42,5 +47,27 @@ export class TodosService {
                 this.todosUpdated.next([...this.todoList]);
 
             });
+    }
+
+    updateTodo(id: string, description: string, completed: boolean) {
+        return this.http.put<{ message: string }>(
+            `http://localhost:3000/api/todos/${id}`,
+            {
+                id,
+                description,
+                completed
+            }
+        );
+    }
+    getTodo(index: number): Todo {
+        return { ...this.todoList[index] };
+    }
+
+    getTodoById(id: string) {
+        return {
+            ...this.todoList.find((todo: Todo) => {
+                return todo._id === id;
+            })
+        };
     }
 }

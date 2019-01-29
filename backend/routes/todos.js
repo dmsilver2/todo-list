@@ -11,6 +11,15 @@ router.get('', (req, res, next) => {
     });
 });
 
+router.get('/:id', (req, res, next) => {
+    Todo.findOne({ _id: req.params.id }).then(todo => {
+        res.status(200).json({
+            message: 'Successfully retreived todo',
+            todo
+        });
+    });
+});
+
 router.post('', (req, res, next) => {
     const todo = new Todo({
         description: req.body.description
@@ -21,6 +30,17 @@ router.post('', (req, res, next) => {
             message: 'Todo added successfully',
             createdTodo: createdTodo
         });
+    });
+});
+
+router.put('/:id', (req, res, next) => {
+    const todo = new Todo({
+        _id: req.body.id,
+        description: req.body.description,
+        completed: req.body.completed
+    });
+    Todo.updateOne({ _id: req.params.id }, todo).then(todo => {
+        res.status(200).json({ message: 'Update successful!', todo });
     });
 });
 

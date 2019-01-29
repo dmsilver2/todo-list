@@ -13,7 +13,9 @@
             <td class="align-middle">{{todo.description}}</td>
             <td class="align-middle"><input id="completed" name="completed" type="checkbox" [checked]="todo.completed"/></td>
             <td class="align-middle">
-                <button class="btn btn-warning">Edit</button>
+                <button
+                    (click)="onEdit(todo._id)"
+                    class="btn btn-warning">Edit</button>
                 <button
                     (click)="onDelete(i)"
                     class="btn btn-danger btn-delete">Delete</button>
