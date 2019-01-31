@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const todoSchema = mongoose.Schema({
+const todoSchema = Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     description: {
         type: String,
         minlength: 3,
@@ -24,5 +29,22 @@ const todoSchema = mongoose.Schema({
         default: false
     }
 });
+
+todoSchema.post('save', function () {
+    const User = mongoose.model('User');
+    User.update({ _id: this.user }, { $push: { todos: this._id } })
+        .then(null);
+});
+
+todoSchema.pre('remove', function () {
+    const User = mongoose.model('User');
+    User.update({ _id: this.user }, { $pull: { todos: this._id } }).then(null);
+});
+
+todoSchema.statics.delete = (id) => {
+    return mongoose.model('Todo')
+        .findById(id)
+        .then(todo => todo.remove());
+}
 
 module.exports = mongoose.model('Todo', todoSchema);

@@ -1,7 +1,7 @@
 const express = require('express');
 const Todo = require('../models/todo.js');
 const router = express.Router();
-
+const checkAuth = require('../middleware/check-auth');
 router.get('', (req, res, next) => {
     Todo.find().then(todos => {
         res.status(200).json({
@@ -20,9 +20,10 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-router.post('', (req, res, next) => {
+router.post('', checkAuth, (req, res, next) => {
     const todo = new Todo({
-        description: req.body.description
+        description: req.body.description,
+        user: req.userId
     });
 
     todo.save().then(createdTodo => {
@@ -45,10 +46,11 @@ router.put('/:id', (req, res, next) => {
 });
 
 router.delete('/:id', (req, res, next) => {
-    const _id = req.params.id;
-    Todo.deleteOne({ _id }).then(result => {
-        res.status(200).json({ message: "Todo deleted!" });
-    });
+    const id = req.params.id;
+    Todo.delete(id)
+        .then(() => {
+            res.status(200).json({ message: "Todo deleted!" });
+        });
 });
 
 module.exports = router;
